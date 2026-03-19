@@ -59,3 +59,30 @@ class CameraService:
         db.commit()
         db.refresh(camera)
         return camera
+
+    @staticmethod
+    def update_camera(
+        db: Session,
+        *,
+        camera_id: str,
+        display_name: str,
+        location: str,
+        source_type: str,
+        source_url: str | None,
+        notes: str | None,
+        is_active: bool,
+    ) -> Camera:
+        camera = db.scalar(select(Camera).where(Camera.camera_id == camera_id))
+        if camera is None:
+            raise ValueError("Camera not found")
+
+        camera.display_name = display_name.strip()
+        camera.location = location.strip()
+        camera.source_type = source_type.strip()
+        camera.source_url = source_url.strip() if source_url else None
+        camera.notes = notes.strip() if notes else None
+        camera.is_active = is_active
+
+        db.commit()
+        db.refresh(camera)
+        return camera

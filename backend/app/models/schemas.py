@@ -73,6 +73,15 @@ class CameraCreate(BaseModel):
     is_active: bool = True
 
 
+class CameraUpdate(BaseModel):
+    display_name: str = Field(min_length=1, max_length=128)
+    location: str = Field(min_length=1, max_length=128)
+    source_type: str = Field(min_length=1, max_length=32)
+    source_url: str | None = Field(default=None, max_length=512)
+    notes: str | None = Field(default=None, max_length=512)
+    is_active: bool = True
+
+
 class FindRequest(BaseModel):
     employee_id: str
 
