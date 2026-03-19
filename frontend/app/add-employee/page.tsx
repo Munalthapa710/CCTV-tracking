@@ -91,9 +91,9 @@ export default function AddEmployeePage() {
   return (
     <ProtectedRoute>
       <AppShell title="Add Employee" subtitle="Capture a clean face set, generate embeddings, and build a reliable employee identity profile.">
-        <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
+        <div className="grid gap-6 2xl:grid-cols-[1.12fr_0.88fr]">
           <section className="glass-panel rounded-[2rem] p-6">
-            <div className="grid gap-4 2xl:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
+            <div className="grid gap-4">
               <div className="panel-soft min-w-0 rounded-[1.8rem] p-5">
                 <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Profile Setup</p>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
