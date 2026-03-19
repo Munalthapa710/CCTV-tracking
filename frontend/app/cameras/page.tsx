@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Cable, CheckCircle2, PencilLine, Plus, RadioTower, Smartphone, TestTube2 } from 'lucide-react'
 
 import AppShell from '@/components/AppShell'
 import CameraPanel from '@/components/CameraPanel'
@@ -158,182 +159,208 @@ export default function CamerasPage() {
 
   return (
     <ProtectedRoute>
-      <AppShell title="Manage Cameras" subtitle="Register browser cameras or CCTV stream sources for live employee tracking.">
-        <div className="grid gap-6 xl:grid-cols-[0.88fr_1.12fr]">
-          <section className="rounded-3xl border border-white/10 bg-slate-panel p-6">
-            <h3 className="text-lg font-semibold">{editingCameraId ? 'Edit camera' : 'Add camera'}</h3>
-            <p className="mt-2 text-sm text-white/55">
-              Use <span className="text-white">browser</span> for local webcam-backed camera slots or <span className="text-white">network</span> for CCTV URLs. For network cameras, use an OpenCV-readable source such as RTSP, HTTP MJPEG, or a direct video stream URL.
-            </p>
-
-            <div className="mt-4 rounded-3xl border border-cyan-accent/20 bg-cyan-accent/10 p-4 text-sm text-white/80">
-              <p className="font-medium text-white">iPhone DroidCam quick setup</p>
-              <p className="mt-2">
-                If DroidCam shows WiFi IP <span className="text-white">192.168.1.71</span> and port <span className="text-white">4747</span>, the usual first URL is:
-              </p>
-              <p className="mt-2 rounded-2xl bg-black/20 px-3 py-2 font-mono text-cyan-accent">
-                http://192.168.1.71:4747/video
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => applyDroidCamTemplate('video')}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
-                >
-                  Use `/video`
-                </button>
-                <button
-                  type="button"
-                  onClick={() => applyDroidCamTemplate('mjpegfeed')}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
-                >
-                  Use `/mjpegfeed`
-                </button>
-                <button
-                  type="button"
-                  onClick={() => applyDroidCamTemplate('shot.jpg')}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
-                >
-                  Use `/shot.jpg`
-                </button>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmitCamera} className="mt-6 space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm text-white/55">Camera ID</span>
-                  <input
-                    value={form.camera_id}
-                    onChange={(event) => setForm((current) => ({ ...current, camera_id: event.target.value }))}
-                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                    placeholder="cam-lobby"
-                    required
-                    disabled={editingCameraId !== null}
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm text-white/55">Display name</span>
-                  <input
-                    value={form.display_name}
-                    onChange={(event) => setForm((current) => ({ ...current, display_name: event.target.value }))}
-                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                    placeholder="Lobby Camera"
-                    required
-                  />
-                </label>
+      <AppShell title="Manage Cameras" subtitle="Add mobile, browser, and network CCTV feeds with guided setup, testing, and inline editing.">
+        <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+          <section className="space-y-6">
+            <div className="glass-panel rounded-[2rem] p-6">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,rgba(82,242,208,0.22),rgba(124,199,255,0.18))] text-cyan-accent">
+                  {editingCameraId ? <PencilLine className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">{editingCameraId ? 'Edit Mode' : 'New Camera'}</p>
+                  <h3 className="text-xl font-semibold text-white">{editingCameraId ? 'Update camera configuration' : 'Register a camera feed'}</h3>
+                </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm text-white/55">Location</span>
-                  <input
-                    value={form.location}
-                    onChange={(event) => setForm((current) => ({ ...current, location: event.target.value }))}
-                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                    placeholder="Main Lobby"
-                    required
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm text-white/55">Source type</span>
-                  <select
-                    value={form.source_type}
-                    onChange={(event) => setForm((current) => ({ ...current, source_type: event.target.value }))}
-                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                  >
-                    <option value="network">Network CCTV</option>
-                    <option value="browser">Browser webcam slot</option>
-                  </select>
-                </label>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4">
+                  <div className="flex items-center gap-2 text-cyan-accent">
+                    <Smartphone className="h-4 w-4" />
+                    <span className="text-xs uppercase tracking-[0.24em]">Mobile</span>
+                  </div>
+                  <p className="mt-2 text-sm text-white/62">Use DroidCam or similar apps over local Wi‑Fi.</p>
+                </div>
+                <div className="rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4">
+                  <div className="flex items-center gap-2 text-sky-accent">
+                    <RadioTower className="h-4 w-4" />
+                    <span className="text-xs uppercase tracking-[0.24em]">Network</span>
+                  </div>
+                  <p className="mt-2 text-sm text-white/62">Supports RTSP, MJPEG, and other OpenCV-readable URLs.</p>
+                </div>
+                <div className="rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4">
+                  <div className="flex items-center gap-2 text-amber-accent">
+                    <Cable className="h-4 w-4" />
+                    <span className="text-xs uppercase tracking-[0.24em]">Browser</span>
+                  </div>
+                  <p className="mt-2 text-sm text-white/62">Bind a local browser feed for interactive testing from the Find page.</p>
+                </div>
               </div>
 
-              <label className="block">
-                <span className="mb-2 block text-sm text-white/55">Source URL</span>
-                <input
-                  value={form.source_url}
-                  onChange={(event) => setForm((current) => ({ ...current, source_url: event.target.value }))}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                  placeholder={form.source_type === 'network' ? 'http://192.168.1.71:4747/video or rtsp://user:pass@ip:554/stream' : 'Leave empty for browser cameras'}
-                  disabled={form.source_type === 'browser'}
-                />
-              </label>
+              <div className="mt-5 rounded-[1.8rem] border border-cyan-accent/18 bg-cyan-accent/10 p-5">
+                <p className="text-sm font-medium text-white">iPhone DroidCam quick setup</p>
+                <p className="mt-2 text-sm leading-6 text-white/74">
+                  If DroidCam shows WiFi IP <span className="font-medium text-white">192.168.1.71</span> and port <span className="font-medium text-white">4747</span>, the most common first URL is:
+                </p>
+                <p className="mt-3 rounded-[1rem] bg-black/20 px-3 py-3 font-mono text-sm text-cyan-accent">
+                  http://192.168.1.71:4747/video
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button type="button" onClick={() => applyDroidCamTemplate('video')} className="rounded-[1rem] border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10">
+                    Use `/video`
+                  </button>
+                  <button type="button" onClick={() => applyDroidCamTemplate('mjpegfeed')} className="rounded-[1rem] border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10">
+                    Use `/mjpegfeed`
+                  </button>
+                  <button type="button" onClick={() => applyDroidCamTemplate('shot.jpg')} className="rounded-[1rem] border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10">
+                    Use `/shot.jpg`
+                  </button>
+                </div>
+              </div>
 
-              <label className="block">
-                <span className="mb-2 block text-sm text-white/55">Notes</span>
-                <textarea
-                  value={form.notes}
-                  onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
-                  className="min-h-[96px] w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none"
-                  placeholder="Optional installation note, floor, NVR info, or stream hint"
-                />
-              </label>
+              <form onSubmit={handleSubmitCamera} className="mt-6 space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Camera ID</span>
+                    <input
+                      value={form.camera_id}
+                      onChange={(event) => setForm((current) => ({ ...current, camera_id: event.target.value }))}
+                      className="w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                      placeholder="cam-lobby"
+                      required
+                      disabled={editingCameraId !== null}
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Display name</span>
+                    <input
+                      value={form.display_name}
+                      onChange={(event) => setForm((current) => ({ ...current, display_name: event.target.value }))}
+                      className="w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                      placeholder="Lobby Camera"
+                      required
+                    />
+                  </label>
+                </div>
 
-              <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/75">
-                <input
-                  type="checkbox"
-                  checked={form.is_active}
-                  onChange={(event) => setForm((current) => ({ ...current, is_active: event.target.checked }))}
-                />
-                Camera is active
-              </label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Location</span>
+                    <input
+                      value={form.location}
+                      onChange={(event) => setForm((current) => ({ ...current, location: event.target.value }))}
+                      className="w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                      placeholder="Main Lobby"
+                      required
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Source type</span>
+                    <select
+                      value={form.source_type}
+                      onChange={(event) => setForm((current) => ({ ...current, source_type: event.target.value }))}
+                      className="w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                    >
+                      <option value="network">Network CCTV</option>
+                      <option value="browser">Browser webcam slot</option>
+                    </select>
+                  </label>
+                </div>
 
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => runCameraTest()}
-                  disabled={testing}
-                  className="rounded-2xl border border-amber-300/25 bg-amber-300/10 px-4 py-3 text-white transition hover:bg-amber-300/15 disabled:opacity-60"
-                >
-                  {testing ? 'Testing...' : 'Test connection'}
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="flex-1 rounded-2xl bg-cyan-accent px-4 py-3 font-semibold text-obsidian transition hover:brightness-110 disabled:opacity-60"
-                >
-                  {saving ? 'Saving...' : editingCameraId ? 'Save changes' : 'Add camera'}
-                </button>
-                {editingCameraId && (
+                <label className="block">
+                  <span className="mb-2 block text-sm text-white/55">Source URL</span>
+                  <input
+                    value={form.source_url}
+                    onChange={(event) => setForm((current) => ({ ...current, source_url: event.target.value }))}
+                    className="w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                    placeholder={form.source_type === 'network' ? 'http://192.168.1.71:4747/video or rtsp://user:pass@ip:554/stream' : 'Leave empty for browser cameras'}
+                    disabled={form.source_type === 'browser'}
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-sm text-white/55">Notes</span>
+                  <textarea
+                    value={form.notes}
+                    onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
+                    className="min-h-[110px] w-full rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 outline-none"
+                    placeholder="Installation note, floor, NVR info, or stream hint"
+                  />
+                </label>
+
+                <label className="flex items-center gap-3 rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/75">
+                  <input
+                    type="checkbox"
+                    checked={form.is_active}
+                    onChange={(event) => setForm((current) => ({ ...current, is_active: event.target.checked }))}
+                  />
+                  Camera is active
+                </label>
+
+                <div className="flex flex-wrap gap-3">
                   <button
                     type="button"
-                    onClick={cancelEditing}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/75 transition hover:bg-white/10"
+                    onClick={() => runCameraTest()}
+                    disabled={testing}
+                    className="rounded-[1.2rem] border border-amber-300/25 bg-amber-300/10 px-5 py-3 text-white transition hover:bg-amber-300/16 disabled:opacity-60"
                   >
-                    Cancel
+                    <span className="inline-flex items-center gap-2">
+                      <TestTube2 className="h-4 w-4" />
+                      {testing ? 'Testing...' : 'Test connection'}
+                    </span>
                   </button>
-                )}
-              </div>
-            </form>
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="flex-1 rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:opacity-60"
+                  >
+                    {saving ? 'Saving...' : editingCameraId ? 'Save changes' : 'Add camera'}
+                  </button>
+                  {editingCameraId && (
+                    <button
+                      type="button"
+                      onClick={cancelEditing}
+                      className="rounded-[1.2rem] border border-white/10 bg-white/5 px-5 py-3 text-white/78 transition hover:bg-white/10"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
 
-            {testResult && (
-              <div className={`mt-5 rounded-3xl border p-4 text-sm ${testResult.connected ? 'border-emerald-400/25 bg-emerald-400/10 text-white' : 'border-rose-400/25 bg-rose-400/10 text-white'}`}>
-                <p className="font-medium">{testResult.connected ? 'Camera test passed' : 'Camera test failed'}</p>
-                <p className="mt-1 text-white/80">{testResult.message}</p>
-                <p className="mt-1 text-white/70">
-                  Face detected in preview: {testResult.face_detected ? 'Yes' : 'No'}
-                </p>
-                {testResult.preview_image && (
-                  <img
-                    src={testResult.preview_image}
-                    alt="Camera test preview"
-                    className="mt-3 h-48 w-full rounded-2xl object-cover"
-                  />
-                )}
-              </div>
-            )}
+              {testResult && (
+                <div className={`mt-5 rounded-[1.8rem] border p-5 text-sm ${
+                  testResult.connected ? 'border-emerald-300/25 bg-emerald-300/10 text-white' : 'border-rose-300/25 bg-rose-300/10 text-white'
+                }`}>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5" />
+                    <p className="font-medium">{testResult.connected ? 'Camera test passed' : 'Camera test failed'}</p>
+                  </div>
+                  <p className="mt-2 text-white/82">{testResult.message}</p>
+                  <p className="mt-1 text-white/68">Face detected in preview: {testResult.face_detected ? 'Yes' : 'No'}</p>
+                  {testResult.preview_image && (
+                    <img
+                      src={testResult.preview_image}
+                      alt="Camera test preview"
+                      className="mt-4 h-56 w-full rounded-[1.6rem] object-cover"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </section>
 
-          <section className="space-y-4">
-            <div className="rounded-3xl border border-white/10 bg-slate-panel p-6">
+          <section className="space-y-5">
+            <div className="glass-panel rounded-[2rem] p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Registered cameras</h3>
-                  <p className="mt-1 text-sm text-white/55">Latest previews and source configuration.</p>
+                  <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Camera Registry</p>
+                  <h3 className="mt-2 text-xl font-semibold text-white">Registered camera feeds</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/56">Every connected feed with current preview, stream details, and quick edit/test actions.</p>
                 </div>
                 <button
                   onClick={loadCameras}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition hover:bg-white/10"
+                  className="rounded-[1.2rem] border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/78 transition hover:bg-white/10"
                 >
                   Refresh
                 </button>
@@ -344,24 +371,26 @@ export default function CamerasPage() {
               {cameras.map((camera) => (
                 <div key={camera.camera_id} className="space-y-3">
                   <CameraPanel camera={camera} />
-                  <div className="rounded-3xl border border-white/10 bg-slate-panel p-4 text-sm text-white/65">
+                  <div className="panel-soft rounded-[1.8rem] p-4 text-sm text-white/66">
                     <p><span className="text-white">Type:</span> {camera.source_type}</p>
                     <p><span className="text-white">Location:</span> {camera.location}</p>
                     <p><span className="text-white">Active:</span> {camera.is_active ? 'Yes' : 'No'}</p>
                     <p><span className="text-white">URL:</span> {camera.source_url || 'Browser-managed source'}</p>
                     <p><span className="text-white">Notes:</span> {camera.notes || 'None'}</p>
-                    <button
-                      onClick={() => startEditing(camera)}
-                      className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => runCameraTest(camera.source_type, camera.source_url || '')}
-                      className="ml-2 mt-3 rounded-2xl border border-amber-300/25 bg-amber-300/10 px-4 py-2 text-sm text-white transition hover:bg-amber-300/15"
-                    >
-                      Test
-                    </button>
+                    <div className="mt-4 flex gap-2">
+                      <button
+                        onClick={() => startEditing(camera)}
+                        className="rounded-[1rem] border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/82 transition hover:bg-white/10"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => runCameraTest(camera.source_type, camera.source_url || '')}
+                        className="rounded-[1rem] border border-amber-300/25 bg-amber-300/10 px-4 py-2 text-sm text-white transition hover:bg-amber-300/16"
+                      >
+                        Test
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

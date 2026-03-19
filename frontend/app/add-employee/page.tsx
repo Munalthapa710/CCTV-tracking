@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Camera, CheckCircle2, ScanFace, Trash2, UserRound } from 'lucide-react'
 
 import AppShell from '@/components/AppShell'
 import ProtectedRoute from '@/components/ProtectedRoute'
@@ -89,86 +90,144 @@ export default function AddEmployeePage() {
 
   return (
     <ProtectedRoute>
-      <AppShell title="Add Employee" subtitle="Capture face samples from the webcam, generate embeddings, and store the employee profile.">
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <section className="rounded-3xl border border-white/10 bg-slate-panel p-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="mb-2 block text-sm text-white/55">Employee name</span>
-                <input
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none placeholder:text-white/25"
-                  placeholder="John Doe"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm text-white/55">Employee ID</span>
-                <input
-                  value={employeeId}
-                  onChange={(event) => setEmployeeId(event.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 outline-none placeholder:text-white/25"
-                  placeholder="EMP-001"
-                />
-              </label>
+      <AppShell title="Add Employee" subtitle="Capture a clean face set, generate embeddings, and build a reliable employee identity profile.">
+        <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
+          <section className="glass-panel rounded-[2rem] p-6">
+            <div className="grid gap-4 lg:grid-cols-[1fr_0.92fr]">
+              <div className="panel-soft rounded-[1.8rem] p-5">
+                <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Profile Setup</p>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Employee name</span>
+                    <div className="flex items-center gap-3 rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3">
+                      <UserRound className="h-4 w-4 text-cyan-accent" />
+                      <input
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        className="w-full bg-transparent outline-none placeholder:text-white/25"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-white/55">Employee ID</span>
+                    <div className="flex items-center gap-3 rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3">
+                      <ScanFace className="h-4 w-4 text-sky-accent" />
+                      <input
+                        value={employeeId}
+                        onChange={(event) => setEmployeeId(event.target.value)}
+                        className="w-full bg-transparent outline-none placeholder:text-white/25"
+                        placeholder="EMP-001"
+                      />
+                    </div>
+                  </label>
+                </div>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Minimum</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">5</p>
+                    <p className="mt-1 text-sm text-white/55">Required samples</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Captured</p>
+                    <p className="mt-2 text-2xl font-semibold text-cyan-accent">{samples.length}</p>
+                    <p className="mt-1 text-sm text-white/55">Current session</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Status</p>
+                    <p className="mt-2 text-base font-semibold text-white">{samples.length >= 5 ? 'Ready to save' : 'Capture more'}</p>
+                    <p className="mt-1 text-sm text-white/55">Clear face, centered frame</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/25">
+                <div className="flex items-center justify-between border-b border-white/8 px-4 py-4">
+                  <div>
+                    <p className="text-sm font-semibold text-white">Live capture</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.24em] text-white/38">Webcam feed</p>
+                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.06] text-cyan-accent">
+                    <Camera className="h-5 w-5" />
+                  </div>
+                </div>
+                <video ref={videoRef} className="aspect-video w-full object-cover" muted playsInline />
+              </div>
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-[2rem] border border-white/10 bg-black/30">
-              <video ref={videoRef} className="aspect-video w-full object-cover" muted playsInline />
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={captureSample}
-                className="rounded-2xl bg-cyan-accent px-4 py-3 font-semibold text-obsidian transition hover:brightness-110"
+                className="rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105"
               >
                 Capture sample
               </button>
               <button
                 onClick={() => setSamples([])}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/75 transition hover:bg-white/10"
+                className="rounded-[1.2rem] border border-white/10 bg-white/5 px-5 py-3 text-white/78 transition hover:bg-white/10"
               >
-                Clear samples
+                <span className="inline-flex items-center gap-2">
+                  <Trash2 className="h-4 w-4" />
+                  Clear samples
+                </span>
               </button>
               <button
                 onClick={saveEmployee}
                 disabled={saving}
-                className="rounded-2xl border border-emerald-400/30 bg-emerald-400/15 px-4 py-3 text-emerald-100 transition hover:bg-emerald-400/20 disabled:opacity-60"
+                className="rounded-[1.2rem] border border-emerald-300/25 bg-emerald-300/12 px-5 py-3 font-medium text-emerald-100 transition hover:bg-emerald-300/18 disabled:opacity-60"
               >
                 {saving ? 'Saving...' : 'Save employee'}
               </button>
             </div>
 
-            <p className="mt-4 text-sm text-white/55">
-              Capture at least 5 clear samples with the full face visible. The backend stores embeddings and one preview image.
+            <p className="mt-4 text-sm leading-6 text-white/56">
+              Capture front-facing samples with slight angle and lighting variation. The backend stores embeddings plus a preview image for quick review.
             </p>
           </section>
 
-          <section className="rounded-3xl border border-white/10 bg-slate-panel p-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Captured samples</h3>
-              <span className={`rounded-full px-3 py-1 text-xs ${samples.length >= 5 ? 'bg-cyan-accent text-obsidian' : 'bg-white/10 text-white/65'}`}>
-                {samples.length}/5 minimum
-              </span>
+          <section className="space-y-6">
+            <div className="glass-panel rounded-[2rem] p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Sample Strip</p>
+                  <h3 className="mt-2 text-xl font-semibold text-white">Captured frames</h3>
+                </div>
+                <span className={`rounded-full px-3 py-1 text-xs font-medium ${samples.length >= 5 ? 'bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian' : 'bg-white/10 text-white/65'}`}>
+                  {samples.length}/5 minimum
+                </span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {samples.map((sample, index) => (
+                  <img key={`${sample}-${index}`} src={sample} alt={`Sample ${index + 1}`} className="aspect-square rounded-[1.3rem] border border-white/8 object-cover" />
+                ))}
+
+                {samples.length === 0 && (
+                  <div className="col-span-full rounded-[1.8rem] border border-dashed border-white/10 bg-black/20 p-10 text-center text-sm text-white/44">
+                    No samples captured yet.
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {samples.map((sample, index) => (
-                <img key={`${sample}-${index}`} src={sample} alt={`Sample ${index + 1}`} className="aspect-square rounded-2xl object-cover" />
-              ))}
-              {samples.length === 0 && (
-                <div className="col-span-full rounded-3xl border border-dashed border-white/10 p-8 text-center text-sm text-white/45">
-                  No samples captured yet.
+            <div className="panel-soft rounded-[2rem] p-6">
+              <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Saved Preview</p>
+              {savedPreview ? (
+                <div className="mt-4">
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-300/12 px-3 py-1 text-xs text-emerald-100">
+                    <CheckCircle2 className="h-4 w-4" />
+                    Latest registration stored
+                  </div>
+                  <img src={savedPreview} alt="Saved employee preview" className="h-60 w-full rounded-[1.8rem] object-cover" />
                 </div>
+              ) : (
+                <p className="mt-4 text-sm leading-6 text-white/56">
+                  After saving, the best preview image appears here so you can confirm the registered identity at a glance.
+                </p>
               )}
             </div>
-
-            {savedPreview && (
-              <div className="mt-6 rounded-3xl border border-cyan-accent/25 bg-black/20 p-4">
-                <p className="text-sm text-white/65">Latest saved preview</p>
-                <img src={savedPreview} alt="Saved employee preview" className="mt-3 h-48 w-48 rounded-3xl object-cover" />
-              </div>
-            )}
           </section>
         </div>
 
