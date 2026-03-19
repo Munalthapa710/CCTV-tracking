@@ -112,6 +112,48 @@ class CameraScanner:
             face_detected=result is not None,
         )
 
+    def test_camera_source(self, source_type: str, source_url: str | None) -> dict:
+        normalized_type = source_type.strip().lower()
+        if normalized_type == "browser":
+            return {
+                "connected": True,
+                "message": "Browser cameras are supplied by the active browser session on the Find page.",
+                "preview_image": None,
+                "face_detected": False,
+            }
+
+        if normalized_type != "network":
+            return {
+                "connected": False,
+                "message": f"Unsupported camera source type: {source_type}",
+                "preview_image": None,
+                "face_detected": False,
+            }
+
+        if not source_url:
+            return {
+                "connected": False,
+                "message": "A source URL is required for network cameras.",
+                "preview_image": None,
+                "face_detected": False,
+            }
+
+        state = self._capture_network_source(source_url)
+        if state.preview is None:
+            return {
+                "connected": False,
+                "message": "Unable to open the stream or read a frame from this camera URL.",
+                "preview_image": None,
+                "face_detected": False,
+            }
+
+        return {
+            "connected": True,
+            "message": "Camera connection successful.",
+            "preview_image": state.preview,
+            "face_detected": state.face_detected,
+        }
+
     def get_status(self, cameras: list[Camera]) -> list[dict]:
         with self._state_lock:
             states = dict(self._states)

@@ -34,6 +34,13 @@ export type CameraStatus = {
   highlighted: boolean
 }
 
+export type CameraTestResult = {
+  connected: boolean
+  message: string
+  preview_image?: string | null
+  face_detected: boolean
+}
+
 export type FindResponse = {
   found: boolean
   employee_id: string
@@ -84,6 +91,8 @@ export const cameraApi = {
       is_active: boolean
     }
   ) => api.put(`/cameras/${encodeURIComponent(cameraId)}`, payload),
+  test: (payload: { source_type: string; source_url?: string | null }) =>
+    api.post<CameraTestResult>('/cameras/test', payload),
   sync: (frames: { camera_id: string; image: string }[]) => api.post('/cameras/sync', { frames }),
 }
 

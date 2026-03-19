@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import AppShell from '@/components/AppShell'
 import CameraPanel from '@/components/CameraPanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import { cameraApi, CameraStatus } from '@/lib/api'
+import { cameraApi, CameraStatus, CameraTestResult } from '@/lib/api'
 
 const initialForm = {
   camera_id: '',
@@ -23,6 +23,8 @@ export default function CamerasPage() {
   const [form, setForm] = useState(initialForm)
   const [saving, setSaving] = useState(false)
   const [editingCameraId, setEditingCameraId] = useState<string | null>(null)
+  const [testing, setTesting] = useState(false)
+  const [testResult, setTestResult] = useState<CameraTestResult | null>(null)
 
   async function loadCameras() {
     try {
@@ -77,6 +79,7 @@ export default function CamerasPage() {
       }
       setForm(initialForm)
       setEditingCameraId(null)
+      setTestResult(null)
       await loadCameras()
     } catch (error: any) {
       toast.error(error.response?.data?.detail || 'Failed to save camera')
@@ -87,6 +90,7 @@ export default function CamerasPage() {
 
   function startEditing(camera: CameraStatus) {
     setEditingCameraId(camera.camera_id)
+    setTestResult(null)
     setForm({
       camera_id: camera.camera_id,
       display_name: camera.display_name,
@@ -101,6 +105,7 @@ export default function CamerasPage() {
   function cancelEditing() {
     setEditingCameraId(null)
     setForm(initialForm)
+    setTestResult(null)
   }
 
   function applyDroidCamTemplate(path: 'video' | 'mjpegfeed' | 'shot.jpg') {
@@ -115,6 +120,40 @@ export default function CamerasPage() {
       source_type: 'network',
       source_url: `${protocol}${host}:${port}/${path}`,
     }))
+  }
+
+  async function runCameraTest(sourceType = form.source_type, sourceUrl = form.source_url) {
+    const normalizedUrl = sourceUrl.trim()
+    if (sourceType === 'network' && !normalizedUrl) {
+      toast.error('Enter a source URL before testing')
+      return
+    }
+
+    setTesting(true)
+    setTestResult(null)
+    try {
+      const { data } = await cameraApi.test({
+        source_type: sourceType,
+        source_url: normalizedUrl || null,
+      })
+      setTestResult(data)
+      if (data.connected) {
+        toast.success(data.message)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.detail || 'Camera test failed'
+      toast.error(message)
+      setTestResult({
+        connected: false,
+        message,
+        preview_image: null,
+        face_detected: false,
+      })
+    } finally {
+      setTesting(false)
+    }
   }
 
   return (
@@ -241,6 +280,14 @@ export default function CamerasPage() {
 
               <div className="flex gap-3">
                 <button
+                  type="button"
+                  onClick={() => runCameraTest()}
+                  disabled={testing}
+                  className="rounded-2xl border border-amber-300/25 bg-amber-300/10 px-4 py-3 text-white transition hover:bg-amber-300/15 disabled:opacity-60"
+                >
+                  {testing ? 'Testing...' : 'Test connection'}
+                </button>
+                <button
                   type="submit"
                   disabled={saving}
                   className="flex-1 rounded-2xl bg-cyan-accent px-4 py-3 font-semibold text-obsidian transition hover:brightness-110 disabled:opacity-60"
@@ -258,6 +305,23 @@ export default function CamerasPage() {
                 )}
               </div>
             </form>
+
+            {testResult && (
+              <div className={`mt-5 rounded-3xl border p-4 text-sm ${testResult.connected ? 'border-emerald-400/25 bg-emerald-400/10 text-white' : 'border-rose-400/25 bg-rose-400/10 text-white'}`}>
+                <p className="font-medium">{testResult.connected ? 'Camera test passed' : 'Camera test failed'}</p>
+                <p className="mt-1 text-white/80">{testResult.message}</p>
+                <p className="mt-1 text-white/70">
+                  Face detected in preview: {testResult.face_detected ? 'Yes' : 'No'}
+                </p>
+                {testResult.preview_image && (
+                  <img
+                    src={testResult.preview_image}
+                    alt="Camera test preview"
+                    className="mt-3 h-48 w-full rounded-2xl object-cover"
+                  />
+                )}
+              </div>
+            )}
           </section>
 
           <section className="space-y-4">
@@ -291,6 +355,12 @@ export default function CamerasPage() {
                       className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
                     >
                       Edit
+                    </button>
+                    <button
+                      onClick={() => runCameraTest(camera.source_type, camera.source_url || '')}
+                      className="ml-2 mt-3 rounded-2xl border border-amber-300/25 bg-amber-300/10 px-4 py-2 text-sm text-white transition hover:bg-amber-300/15"
+                    >
+                      Test
                     </button>
                   </div>
                 </div>

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.models.schemas import CameraCreate, CameraSyncRequest, CameraUpdate
+from app.models.schemas import CameraCreate, CameraSyncRequest, CameraTestRequest, CameraTestResponse, CameraUpdate
 from app.runtime import get_camera_scanner
 from app.services.camera_service import CameraService
 
@@ -69,6 +69,12 @@ def update_camera(camera_id: str, payload: CameraUpdate, db: Session = Depends(g
         "notes": camera.notes,
         "is_active": camera.is_active,
     }
+
+
+@router.post("/test", response_model=CameraTestResponse)
+def test_camera(payload: CameraTestRequest):
+    scanner = get_camera_scanner()
+    return scanner.test_camera_source(payload.source_type, payload.source_url)
 
 
 @router.post("/sync")

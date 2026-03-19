@@ -82,6 +82,18 @@ class CameraUpdate(BaseModel):
     is_active: bool = True
 
 
+class CameraTestRequest(BaseModel):
+    source_type: str = Field(min_length=1, max_length=32)
+    source_url: str | None = Field(default=None, max_length=512)
+
+
+class CameraTestResponse(BaseModel):
+    connected: bool
+    message: str
+    preview_image: str | None = None
+    face_detected: bool = False
+
+
 class FindRequest(BaseModel):
     employee_id: str
 
