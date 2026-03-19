@@ -142,7 +142,7 @@ class CameraScanner:
         if state.preview is None:
             return {
                 "connected": False,
-                "message": "Unable to open the stream or read a frame from this camera URL.",
+                "message": self._camera_test_error_message(source_url),
                 "preview_image": None,
                 "face_detected": False,
             }
@@ -228,3 +228,15 @@ class CameraScanner:
     def processed_camera_count(self) -> int:
         with self._state_lock:
             return sum(1 for state in self._states.values() if state.processed_at is not None)
+
+    def _camera_test_error_message(self, source_url: str) -> str:
+        normalized = source_url.lower()
+        if "4747" in normalized or "droidcam" in normalized:
+            return (
+                "Unable to read a frame from this URL. If this is iPhone DroidCam, the app is likely "
+                "using the desktop-only DroidCam protocol instead of an OpenCV-readable MJPEG/RTSP stream. "
+                "Use the official DroidCam desktop client, browser camera mode, or another IP camera app "
+                "that provides a real HTTP/MJPEG or RTSP URL."
+            )
+
+        return "Unable to open the stream or read a frame from this camera URL."

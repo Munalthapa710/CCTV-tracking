@@ -252,6 +252,9 @@ export default function CamerasPage() {
                     Use `/shot.jpg`
                   </button>
                 </div>
+                <p className="mt-4 text-xs leading-5 text-white/62">
+                  If all three URLs fail, the iPhone app is probably not exposing a real MJPEG/RTSP stream for OpenCV. In that case, use browser camera mode, the official DroidCam desktop client, or a different IP camera app.
+                </p>
               </div>
 
               <form onSubmit={handleSubmitCamera} className="mt-6 space-y-4">
