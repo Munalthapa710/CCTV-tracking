@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.models.schemas import CameraCreate, CameraSyncRequest, CameraTestRequest, CameraTestResponse, CameraUpdate
+from app.models.schemas import CameraActiveUpdate, CameraCreate, CameraSyncRequest, CameraTestRequest, CameraTestResponse, CameraUpdate
 from app.runtime import get_camera_scanner
 from app.services.camera_service import CameraService
 
@@ -69,6 +69,34 @@ def update_camera(camera_id: str, payload: CameraUpdate, db: Session = Depends(g
         "notes": camera.notes,
         "is_active": camera.is_active,
     }
+
+
+@router.patch("/{camera_id}/active")
+def set_camera_active(camera_id: str, payload: CameraActiveUpdate, db: Session = Depends(get_db)):
+    try:
+        camera = CameraService.set_camera_active(db, camera_id=camera_id, is_active=payload.is_active)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    return {
+        "camera_id": camera.camera_id,
+        "display_name": camera.display_name,
+        "location": camera.location,
+        "source_type": camera.source_type,
+        "source_url": camera.source_url,
+        "notes": camera.notes,
+        "is_active": camera.is_active,
+    }
+
+
+@router.delete("/{camera_id}")
+def delete_camera(camera_id: str, db: Session = Depends(get_db)):
+    try:
+        CameraService.delete_camera(db, camera_id=camera_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    return {"success": True, "camera_id": camera_id}
 
 
 @router.post("/test", response_model=CameraTestResponse)

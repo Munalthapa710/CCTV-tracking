@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Camera, LayoutDashboard, LogOut, Search, Settings2, UserPlus } from 'lucide-react'
+import { Camera, History, LayoutDashboard, LogOut, Search, Settings2, UserPlus } from 'lucide-react'
 
 import { clearSession } from '@/lib/auth'
 
@@ -11,6 +11,7 @@ const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/add-employee', label: 'Add Employee', icon: UserPlus },
   { href: '/find', label: 'Find Employee', icon: Search },
+  { href: '/tracking', label: 'Tracking', icon: History },
   { href: '/cameras', label: 'Manage Cameras', icon: Settings2 },
 ]
 
@@ -96,7 +97,7 @@ export default function AppShell({
           <main>{children}</main>
 
           <div className="glass-panel fixed inset-x-4 bottom-4 z-20 rounded-[1.6rem] p-2 lg:hidden">
-            <nav className="grid grid-cols-4 gap-2">
+            <nav className="grid grid-cols-5 gap-2">
               {navItems.map(({ href, label, icon: Icon }) => {
                 const active = pathname === href
                 return (

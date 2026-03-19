@@ -7,13 +7,14 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import inspect, text
 from sqlalchemy import func, select
 
-from app.core.config import DATA_DIR, PREVIEW_DIR, settings
+from app.core.config import DATA_DIR, PREVIEW_DIR, SNAPSHOT_DIR, settings
 from app.core.database import Base, SessionLocal, engine
 from app.models.entities import Camera, Employee
 from app.routes.auth import router as auth_router
 from app.routes.cameras import router as cameras_router
 from app.routes.employees import router as employees_router
 from app.routes.find import router as find_router
+from app.routes.tracking import router as tracking_router
 from app.runtime import camera_scanner, employee_service, face_engine
 from app.services.camera_service import CameraService
 
@@ -22,8 +23,9 @@ from app.services.camera_service import CameraService
 async def lifespan(_: FastAPI):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
+    SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     Base.metadata.create_all(bind=engine)
-    ensure_camera_columns()
+    ensure_schema_columns()
 
     with SessionLocal() as db:
         CameraService.ensure_default_cameras(db)
@@ -56,22 +58,26 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(employees_router, prefix="/api")
 app.include_router(cameras_router, prefix="/api")
 app.include_router(find_router, prefix="/api")
+app.include_router(tracking_router, prefix="/api")
 
 
-def ensure_camera_columns() -> None:
+def ensure_schema_columns() -> None:
     inspector = inspect(engine)
     table_names = inspector.get_table_names()
-    if "cameras" not in table_names:
-        return
-
-    existing_columns = {column["name"] for column in inspector.get_columns("cameras")}
     statements = []
-    if "source_type" not in existing_columns:
-        statements.append("ALTER TABLE cameras ADD COLUMN source_type VARCHAR(32) DEFAULT 'browser'")
-    if "source_url" not in existing_columns:
-        statements.append("ALTER TABLE cameras ADD COLUMN source_url VARCHAR(512)")
-    if "notes" not in existing_columns:
-        statements.append("ALTER TABLE cameras ADD COLUMN notes VARCHAR(512)")
+    if "cameras" in table_names:
+        existing_columns = {column["name"] for column in inspector.get_columns("cameras")}
+        if "source_type" not in existing_columns:
+            statements.append("ALTER TABLE cameras ADD COLUMN source_type VARCHAR(32) DEFAULT 'browser'")
+        if "source_url" not in existing_columns:
+            statements.append("ALTER TABLE cameras ADD COLUMN source_url VARCHAR(512)")
+        if "notes" not in existing_columns:
+            statements.append("ALTER TABLE cameras ADD COLUMN notes VARCHAR(512)")
+
+    if "tracking_events" in table_names:
+        tracking_columns = {column["name"] for column in inspector.get_columns("tracking_events")}
+        if "snapshot_image" not in tracking_columns:
+            statements.append("ALTER TABLE tracking_events ADD COLUMN snapshot_image VARCHAR(255)")
 
     if statements:
         with engine.begin() as connection:

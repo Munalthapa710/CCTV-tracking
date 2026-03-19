@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.entities import Camera
@@ -14,15 +14,13 @@ DEFAULT_CAMERAS = [
 class CameraService:
     @staticmethod
     def ensure_default_cameras(db: Session) -> None:
-        existing_ids = set(db.scalars(select(Camera.camera_id)).all())
-        created = False
+        camera_count = db.scalar(select(func.count(Camera.id))) or 0
+        if camera_count > 0:
+            return
+
         for camera in DEFAULT_CAMERAS:
-            if camera["camera_id"] in existing_ids:
-                continue
             db.add(Camera(**camera, is_active=True))
-            created = True
-        if created:
-            db.commit()
+        db.commit()
 
     @staticmethod
     def list_cameras(db: Session) -> list[Camera]:
@@ -44,7 +42,7 @@ class CameraService:
         if existing:
             raise ValueError("Camera ID already exists")
 
-        next_order = len(CameraService.list_cameras(db)) + 1
+        next_order = (db.scalar(select(func.max(Camera.sort_order))) or 0) + 1
         camera = Camera(
             camera_id=camera_id.strip(),
             display_name=display_name.strip(),
@@ -59,6 +57,32 @@ class CameraService:
         db.commit()
         db.refresh(camera)
         return camera
+
+    @staticmethod
+    def set_camera_active(db: Session, *, camera_id: str, is_active: bool) -> Camera:
+        camera = db.scalar(select(Camera).where(Camera.camera_id == camera_id))
+        if camera is None:
+            raise ValueError("Camera not found")
+
+        camera.is_active = is_active
+        db.commit()
+        db.refresh(camera)
+        return camera
+
+    @staticmethod
+    def delete_camera(db: Session, *, camera_id: str) -> None:
+        camera = db.scalar(select(Camera).where(Camera.camera_id == camera_id))
+        if camera is None:
+            raise ValueError("Camera not found")
+
+        db.delete(camera)
+        db.flush()
+
+        cameras = list(db.scalars(select(Camera).order_by(Camera.sort_order.asc(), Camera.id.asc())))
+        for index, remaining in enumerate(cameras, start=1):
+            remaining.sort_order = index
+
+        db.commit()
 
     @staticmethod
     def update_camera(

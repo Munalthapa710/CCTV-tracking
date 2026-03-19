@@ -33,6 +33,7 @@ def find_employee(payload: FindRequest, db: Session = Depends(get_db)):
             camera_id=match["camera_id"],
             location=match["location"],
             similarity=match["similarity"],
+            snapshot_image=match["latest_preview"],
         )
         return {
             "found": True,

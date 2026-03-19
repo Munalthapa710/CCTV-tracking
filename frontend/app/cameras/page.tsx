@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Cable, CheckCircle2, PencilLine, Plus, RadioTower, Smartphone, TestTube2 } from 'lucide-react'
+import { Cable, CheckCircle2, PencilLine, Plus, Power, RadioTower, Smartphone, TestTube2, Trash2 } from 'lucide-react'
 
 import AppShell from '@/components/AppShell'
 import CameraPanel from '@/components/CameraPanel'
@@ -26,6 +26,7 @@ export default function CamerasPage() {
   const [editingCameraId, setEditingCameraId] = useState<string | null>(null)
   const [testing, setTesting] = useState(false)
   const [testResult, setTestResult] = useState<CameraTestResult | null>(null)
+  const [busyCameraId, setBusyCameraId] = useState<string | null>(null)
 
   async function loadCameras() {
     try {
@@ -157,9 +158,44 @@ export default function CamerasPage() {
     }
   }
 
+  async function handleToggleCamera(camera: CameraStatus) {
+    setBusyCameraId(camera.camera_id)
+    try {
+      await cameraApi.setActive(camera.camera_id, !camera.is_active)
+      toast.success(camera.is_active ? 'Camera disabled' : 'Camera enabled')
+      if (editingCameraId === camera.camera_id) {
+        setForm((current) => ({ ...current, is_active: !camera.is_active }))
+      }
+      await loadCameras()
+    } catch (error: any) {
+      toast.error(error.response?.data?.detail || 'Failed to update camera')
+    } finally {
+      setBusyCameraId(null)
+    }
+  }
+
+  async function handleDeleteCamera(camera: CameraStatus) {
+    const confirmed = window.confirm(`Delete camera "${camera.display_name}"?`)
+    if (!confirmed) return
+
+    setBusyCameraId(camera.camera_id)
+    try {
+      await cameraApi.delete(camera.camera_id)
+      if (editingCameraId === camera.camera_id) {
+        cancelEditing()
+      }
+      toast.success('Camera deleted')
+      await loadCameras()
+    } catch (error: any) {
+      toast.error(error.response?.data?.detail || 'Failed to delete camera')
+    } finally {
+      setBusyCameraId(null)
+    }
+  }
+
   return (
     <ProtectedRoute>
-      <AppShell title="Manage Cameras" subtitle="Add mobile, browser, and network CCTV feeds with guided setup, testing, and inline editing.">
+      <AppShell title="Manage Cameras" subtitle="Add mobile, browser, and network CCTV feeds with guided setup, testing, inline editing, and lifecycle controls.">
         <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
           <section className="space-y-6">
             <div className="glass-panel rounded-[2rem] p-6">
@@ -179,7 +215,7 @@ export default function CamerasPage() {
                     <Smartphone className="h-4 w-4" />
                     <span className="text-xs uppercase tracking-[0.24em]">Mobile</span>
                   </div>
-                  <p className="mt-2 text-sm text-white/62">Use DroidCam or similar apps over local Wi‑Fi.</p>
+                  <p className="mt-2 text-sm text-white/62">Use DroidCam or similar apps over local Wi-Fi.</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4">
                   <div className="flex items-center gap-2 text-sky-accent">
@@ -356,7 +392,7 @@ export default function CamerasPage() {
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Camera Registry</p>
                   <h3 className="mt-2 text-xl font-semibold text-white">Registered camera feeds</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/56">Every connected feed with current preview, stream details, and quick edit/test actions.</p>
+                  <p className="mt-2 text-sm leading-6 text-white/56">Every connected feed with current preview, stream details, and quick edit, test, enable, or delete actions.</p>
                 </div>
                 <button
                   onClick={loadCameras}
@@ -377,7 +413,7 @@ export default function CamerasPage() {
                     <p><span className="text-white">Active:</span> {camera.is_active ? 'Yes' : 'No'}</p>
                     <p><span className="text-white">URL:</span> {camera.source_url || 'Browser-managed source'}</p>
                     <p><span className="text-white">Notes:</span> {camera.notes || 'None'}</p>
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       <button
                         onClick={() => startEditing(camera)}
                         className="rounded-[1rem] border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/82 transition hover:bg-white/10"
@@ -389,6 +425,26 @@ export default function CamerasPage() {
                         className="rounded-[1rem] border border-amber-300/25 bg-amber-300/10 px-4 py-2 text-sm text-white transition hover:bg-amber-300/16"
                       >
                         Test
+                      </button>
+                      <button
+                        onClick={() => handleToggleCamera(camera)}
+                        disabled={busyCameraId === camera.camera_id}
+                        className="rounded-[1rem] border border-cyan-accent/20 bg-cyan-accent/10 px-4 py-2 text-sm text-white transition hover:bg-cyan-accent/16 disabled:opacity-60"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <Power className="h-4 w-4" />
+                          {camera.is_active ? 'Disable' : 'Enable'}
+                        </span>
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCamera(camera)}
+                        disabled={busyCameraId === camera.camera_id}
+                        className="rounded-[1rem] border border-rose-300/25 bg-rose-300/10 px-4 py-2 text-sm text-white transition hover:bg-rose-300/16 disabled:opacity-60"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <Trash2 className="h-4 w-4" />
+                          Delete
+                        </span>
                       </button>
                     </div>
                   </div>

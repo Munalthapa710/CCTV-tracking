@@ -50,6 +50,7 @@ class TrackingEvent(Base):
     location: Mapped[str] = mapped_column(String(128))
     camera_id: Mapped[str] = mapped_column(String(64), index=True)
     similarity: Mapped[float] = mapped_column(Float)
+    snapshot_image: Mapped[str | None] = mapped_column(String(255), nullable=True)
     timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
 
     employee: Mapped[Employee] = relationship(back_populates="tracking_events")

@@ -34,6 +34,7 @@ start.bat
 
 - Username: `admin`
 - Password: `admin123`
+- Or create a local account from `http://localhost:3001/register`
 
 ## Main Workflow
 
@@ -45,23 +46,37 @@ start.bat
 6. Go to **Find Employee**
 7. Select the employee and let the page sync the camera grid
 8. Click **Find**
+9. Review saved detections and snapshots on **Tracking History**
 
-## Camera Simulation
+## Camera Management
 
-- The Find page uses one live webcam feed and transforms it into 3 simulated cameras:
+- Open `http://localhost:3001/cameras` to add, edit, test, disable, or delete cameras
+- Default browser camera slots are created only on first startup:
   - `cam-a` -> Room A
   - `cam-b` -> Room B
   - `cam-c` -> Room C
+- Network cameras can use HTTP, MJPEG, or RTSP URLs that OpenCV can open
 - Camera frames are synced to the FastAPI backend every 2 seconds.
 - The backend processes the latest frames using InsightFace when available and falls back to OpenCV-based embeddings if needed.
+
+## Tracking History
+
+- Open `http://localhost:3001/tracking` to review recent detections
+- Every successful match stores:
+  - employee identity
+  - camera and location
+  - similarity score
+  - timestamp
+  - saved snapshot frame when preview data is available
 
 ## Storage
 
 - Database: `backend\employee_finder.db`
 - Employee preview images: `backend\data\previews\`
+- Detection snapshots: `backend\data\snapshots\`
 
 ## Notes
 
 - No PostgreSQL setup is required.
-- No database-backed authentication is required.
-- The backend already seeds the 3 default cameras automatically.
+- SQLite is used for users, employees, embeddings, cameras, and tracking events.
+- The backend seeds the default camera slots only when the camera table is empty.

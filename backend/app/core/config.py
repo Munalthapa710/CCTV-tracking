@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 BASE_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = BASE_DIR / "data"
 PREVIEW_DIR = DATA_DIR / "previews"
+SNAPSHOT_DIR = DATA_DIR / "snapshots"
 
 
 class Settings(BaseSettings):
@@ -18,6 +19,7 @@ class Settings(BaseSettings):
     STATIC_USERNAME: str = "admin"
     STATIC_PASSWORD: str = "admin123"
     PREVIEW_DIR: str = str(PREVIEW_DIR)
+    SNAPSHOT_DIR: str = str(SNAPSHOT_DIR)
 
     class Config:
         env_file = ".env"

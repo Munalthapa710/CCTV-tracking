@@ -41,6 +41,19 @@ export type CameraTestResult = {
   face_detected: boolean
 }
 
+export type TrackingHistoryItem = {
+  id: number
+  employee_id: string
+  employee_name: string
+  employee_preview_image_url?: string | null
+  camera_id: string
+  camera_display_name?: string | null
+  location: string
+  similarity: number
+  snapshot_image_url?: string | null
+  timestamp: string
+}
+
 export type FindResponse = {
   found: boolean
   employee_id: string
@@ -93,11 +106,19 @@ export const cameraApi = {
   ) => api.put(`/cameras/${encodeURIComponent(cameraId)}`, payload),
   test: (payload: { source_type: string; source_url?: string | null }) =>
     api.post<CameraTestResult>('/cameras/test', payload),
+  setActive: (cameraId: string, isActive: boolean) =>
+    api.patch(`/cameras/${encodeURIComponent(cameraId)}/active`, { is_active: isActive }),
+  delete: (cameraId: string) => api.delete(`/cameras/${encodeURIComponent(cameraId)}`),
   sync: (frames: { camera_id: string; image: string }[]) => api.post('/cameras/sync', { frames }),
 }
 
 export const findApi = {
   find: (employee_id: string) => api.post<FindResponse>('/find', { employee_id }),
+}
+
+export const trackingApi = {
+  list: (params?: { limit?: number; employee_id?: string; camera_id?: string }) =>
+    api.get<{ events: TrackingHistoryItem[] }>('/tracking', { params }),
 }
 
 export const healthApi = {

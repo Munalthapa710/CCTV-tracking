@@ -199,6 +199,7 @@ class CameraScanner:
                         "camera_id": camera.camera_id,
                         "location": camera.location,
                         "similarity": best_similarity,
+                        "latest_preview": state.preview,
                     }
 
             camera_cards.append(

@@ -94,6 +94,10 @@ class CameraTestResponse(BaseModel):
     face_detected: bool = False
 
 
+class CameraActiveUpdate(BaseModel):
+    is_active: bool
+
+
 class FindRequest(BaseModel):
     employee_id: str
 
@@ -114,3 +118,20 @@ class HealthResponse(BaseModel):
     employee_count: int
     camera_count: int
     processed_camera_count: int
+
+
+class TrackingHistoryItem(BaseModel):
+    id: int
+    employee_id: str
+    employee_name: str
+    employee_preview_image_url: str | None = None
+    camera_id: str
+    camera_display_name: str | None = None
+    location: str
+    similarity: float
+    snapshot_image_url: str | None = None
+    timestamp: datetime
+
+
+class TrackingHistoryResponse(BaseModel):
+    events: list[TrackingHistoryItem]
