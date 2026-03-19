@@ -11,22 +11,24 @@ export default function CameraPanel({
 
   return (
     <div
-      className={`overflow-hidden rounded-3xl border ${
-        camera.highlighted ? 'border-cyan-accent shadow-[0_0_0_1px_rgba(73,246,213,0.45)]' : 'border-white/10'
-      } bg-slate-panel`}
+      className={`overflow-hidden rounded-[1.8rem] border ${
+        camera.highlighted
+          ? 'border-cyan-accent/50 shadow-[0_0_0_1px_rgba(82,242,208,0.25),0_22px_55px_rgba(82,242,208,0.12)]'
+          : 'border-white/10'
+      } bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)),rgba(10,20,28,0.92)]`}
     >
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+      <div className="flex items-center justify-between border-b border-white/8 px-4 py-4">
         <div>
           <p className="text-sm font-semibold text-white">{camera.display_name}</p>
-          <p className="text-xs uppercase tracking-[0.28em] text-white/45">{camera.location}</p>
+          <p className="mt-1 text-[11px] uppercase tracking-[0.28em] text-white/42">{camera.location}</p>
         </div>
         <div
-          className={`rounded-full px-3 py-1 text-xs ${
+          className={`rounded-full px-3 py-1 text-[11px] font-medium ${
             camera.highlighted
-              ? 'bg-cyan-accent text-obsidian'
+              ? 'bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian'
               : camera.face_detected
-                ? 'bg-amber-400/15 text-amber-200'
-                : 'bg-white/8 text-white/60'
+                ? 'bg-amber-300/16 text-amber-100'
+                : 'bg-white/8 text-white/58'
           }`}
         >
           {camera.highlighted ? 'Match' : camera.face_detected ? 'Face detected' : 'Waiting'}
@@ -37,15 +39,15 @@ export default function CameraPanel({
         {preview ? (
           <img src={preview} alt={camera.display_name} className="h-full w-full object-cover" />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-white/35">
+          <div className="flex h-full items-center justify-center px-6 text-center text-sm text-white/34">
             Camera preview will appear after sync
           </div>
         )}
       </div>
 
-      <div className="flex items-center justify-between px-4 py-3 text-xs text-white/55">
-        <span>{camera.processed_at ? 'Processed' : 'Not processed yet'}</span>
-        <span>{camera.similarity ? `${Math.round(camera.similarity * 100)}% match` : 'No match score'}</span>
+      <div className="flex items-center justify-between border-t border-white/8 px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-white/46">
+        <span>{camera.processed_at ? 'Processed' : 'Not processed'}</span>
+        <span>{camera.similarity ? `${Math.round(camera.similarity * 100)}% match` : 'No score yet'}</span>
       </div>
     </div>
   )
