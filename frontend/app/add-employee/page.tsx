@@ -93,8 +93,8 @@ export default function AddEmployeePage() {
       <AppShell title="Add Employee" subtitle="Capture a clean face set, generate embeddings, and build a reliable employee identity profile.">
         <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
           <section className="glass-panel rounded-[2rem] p-6">
-            <div className="grid gap-4 lg:grid-cols-[1fr_0.92fr]">
-              <div className="panel-soft rounded-[1.8rem] p-5">
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
+              <div className="panel-soft min-w-0 rounded-[1.8rem] p-5">
                 <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Profile Setup</p>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   <label className="block">
@@ -124,26 +124,26 @@ export default function AddEmployeePage() {
                   </label>
                 </div>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                <div className="mt-5 grid gap-3 md:grid-cols-3">
+                  <div className="min-w-0 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                     <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Minimum</p>
                     <p className="mt-2 text-2xl font-semibold text-white">5</p>
                     <p className="mt-1 text-sm text-white/55">Required samples</p>
                   </div>
-                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                  <div className="min-w-0 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                     <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Captured</p>
                     <p className="mt-2 text-2xl font-semibold text-cyan-accent">{samples.length}</p>
                     <p className="mt-1 text-sm text-white/55">Current session</p>
                   </div>
-                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                  <div className="min-w-0 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                     <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">Status</p>
                     <p className="mt-2 text-base font-semibold text-white">{samples.length >= 5 ? 'Ready to save' : 'Capture more'}</p>
-                    <p className="mt-1 text-sm text-white/55">Clear face, centered frame</p>
+                    <p className="mt-1 break-words text-sm leading-5 text-white/55">Clear face, centered frame</p>
                   </div>
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/25">
+              <div className="min-w-0 overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/25">
                 <div className="flex items-center justify-between border-b border-white/8 px-4 py-4">
                   <div>
                     <p className="text-sm font-semibold text-white">Live capture</p>
