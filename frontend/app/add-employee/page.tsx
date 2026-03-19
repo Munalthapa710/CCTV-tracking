@@ -160,7 +160,7 @@ export default function AddEmployeePage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={captureSample}
-                className="rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105"
+                className="rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105"
               >
                 Capture sample
               </button>
@@ -194,7 +194,7 @@ export default function AddEmployeePage() {
                   <p className="text-[11px] uppercase tracking-[0.34em] text-white/40">Sample Strip</p>
                   <h3 className="mt-2 text-xl font-semibold text-white">Captured frames</h3>
                 </div>
-                <span className={`rounded-full px-3 py-1 text-xs font-medium ${samples.length >= 5 ? 'bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian' : 'bg-white/10 text-white/65'}`}>
+                <span className={`rounded-full px-3 py-1 text-xs font-medium ${samples.length >= 5 ? 'bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] text-obsidian' : 'bg-white/10 text-white/65'}`}>
                   {samples.length}/5 minimum
                 </span>
               </div>

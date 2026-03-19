@@ -186,7 +186,7 @@ export default function FindEmployeePage() {
                     onClick={() => setSelectedEmployee(employee)}
                     className={`flex w-full items-center gap-4 rounded-[1.4rem] border px-4 py-3 text-left transition ${
                       selectedEmployee?.employee_id === employee.employee_id
-                        ? 'border-cyan-accent/45 bg-cyan-accent/10 shadow-[0_12px_34px_rgba(82,242,208,0.08)]'
+                        ? 'border-cyan-accent/45 bg-cyan-accent/10 shadow-[0_12px_34px_rgba(255,154,92,0.08)]'
                         : 'border-white/10 bg-black/20 hover:bg-white/[0.04]'
                     }`}
                   >
@@ -212,7 +212,7 @@ export default function FindEmployeePage() {
 
             <div className="panel-soft rounded-[2rem] p-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,rgba(82,242,208,0.22),rgba(124,199,255,0.16))] text-cyan-accent">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[linear-gradient(135deg,rgba(255,154,92,0.22),rgba(255,211,111,0.16))] text-cyan-accent">
                   <UserRound className="h-6 w-6" />
                 </div>
                 <div>
@@ -244,7 +244,7 @@ export default function FindEmployeePage() {
                   <button
                     onClick={handleFind}
                     disabled={finding}
-                    className="mt-6 w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:opacity-60"
+                    className="mt-6 w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:opacity-60"
                   >
                     {finding ? 'Scanning cameras...' : 'Find employee'}
                   </button>

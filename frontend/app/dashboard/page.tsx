@@ -112,7 +112,7 @@ export default function DashboardPage() {
             <div className="panel-soft rounded-[2rem] p-6">
               <p className="text-[11px] uppercase tracking-[0.34em] text-white/38">Visual Status</p>
               <div className="mt-4 flex items-center gap-3">
-                <div className="h-3 w-3 rounded-full bg-cyan-accent shadow-[0_0_18px_rgba(82,242,208,0.85)]" />
+                <div className="h-3 w-3 rounded-full bg-cyan-accent shadow-[0_0_18px_rgba(255,154,92,0.85)]" />
                 <p className="text-sm text-white/68">Detection engine online and ready for camera updates.</p>
               </div>
             </div>

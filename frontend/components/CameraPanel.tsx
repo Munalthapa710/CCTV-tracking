@@ -13,7 +13,7 @@ export default function CameraPanel({
     <div
       className={`overflow-hidden rounded-[1.8rem] border ${
         camera.highlighted
-          ? 'border-cyan-accent/50 shadow-[0_0_0_1px_rgba(82,242,208,0.25),0_22px_55px_rgba(82,242,208,0.12)]'
+          ? 'border-cyan-accent/50 shadow-[0_0_0_1px_rgba(255,154,92,0.25),0_22px_55px_rgba(255,154,92,0.12)]'
           : 'border-white/10'
       } bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)),rgba(10,20,28,0.92)]`}
     >
@@ -25,7 +25,7 @@ export default function CameraPanel({
         <div
           className={`rounded-full px-3 py-1 text-[11px] font-medium ${
             camera.highlighted
-              ? 'bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian'
+              ? 'bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] text-obsidian'
               : camera.face_detected
                 ? 'bg-amber-300/16 text-amber-100'
                 : 'bg-white/8 text-white/58'

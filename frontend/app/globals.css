@@ -8,9 +8,9 @@
   --obsidian-2: #0b1822;
   --slate-panel: rgba(14, 27, 36, 0.82);
   --slate-panel-strong: rgba(12, 22, 30, 0.94);
-  --cyan-accent: #52f2d0;
-  --sky-accent: #7cc7ff;
-  --amber-accent: #ffb36a;
+  --cyan-accent: #ff9a5c;
+  --sky-accent: #ffd36f;
+  --amber-accent: #ffbf7a;
   --paper: #effaf8;
   --muted: rgba(231, 244, 246, 0.64);
 }
@@ -22,9 +22,9 @@
 html {
   min-height: 100%;
   background:
-    radial-gradient(circle at 12% 8%, rgba(82, 242, 208, 0.2), transparent 24%),
-    radial-gradient(circle at 88% 16%, rgba(124, 199, 255, 0.18), transparent 20%),
-    radial-gradient(circle at 78% 84%, rgba(255, 179, 106, 0.12), transparent 18%),
+    radial-gradient(circle at 12% 8%, rgba(255, 154, 92, 0.2), transparent 24%),
+    radial-gradient(circle at 88% 16%, rgba(255, 211, 111, 0.18), transparent 20%),
+    radial-gradient(circle at 78% 84%, rgba(255, 191, 122, 0.12), transparent 18%),
     linear-gradient(160deg, #071218 0%, #0a1621 46%, #081117 100%);
 }
 
@@ -71,8 +71,8 @@ textarea {
 
 .accent-ring {
   box-shadow:
-    0 0 0 1px rgba(82, 242, 208, 0.2),
-    0 20px 55px rgba(82, 242, 208, 0.12);
+    0 0 0 1px rgba(255, 154, 92, 0.2),
+    0 20px 55px rgba(255, 154, 92, 0.12);
 }
 
 ::-webkit-scrollbar {
@@ -85,6 +85,6 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(124, 199, 255, 0.34), rgba(82, 242, 208, 0.28));
+  background: linear-gradient(180deg, rgba(255, 211, 111, 0.34), rgba(255, 154, 92, 0.28));
   border-radius: 999px;
 }

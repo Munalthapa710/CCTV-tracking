@@ -11,7 +11,9 @@ module.exports = {
       colors: {
         obsidian: '#071218',
         'slate-panel': '#111d25',
-        'cyan-accent': '#49f6d5',
+        'cyan-accent': '#ff9a5c',
+        'sky-accent': '#ffd36f',
+        'amber-accent': '#ffbf7a',
       },
     },
   },

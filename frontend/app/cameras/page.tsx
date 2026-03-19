@@ -200,7 +200,7 @@ export default function CamerasPage() {
           <section className="space-y-6">
             <div className="glass-panel rounded-[2rem] p-6">
               <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,rgba(82,242,208,0.22),rgba(124,199,255,0.18))] text-cyan-accent">
+                <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,rgba(255,154,92,0.22),rgba(255,211,111,0.18))] text-cyan-accent">
                   {editingCameraId ? <PencilLine className="h-7 w-7" /> : <Plus className="h-7 w-7" />}
                 </div>
                 <div>
@@ -348,7 +348,7 @@ export default function CamerasPage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex-1 rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:opacity-60"
+                    className="flex-1 rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] px-5 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:opacity-60"
                   >
                     {saving ? 'Saving...' : editingCameraId ? 'Save changes' : 'Add camera'}
                   </button>

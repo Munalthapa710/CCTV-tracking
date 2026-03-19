@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-obsidian px-4 py-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(82,242,208,0.18),transparent_24%),radial-gradient(circle_at_92%_12%,rgba(124,199,255,0.16),transparent_18%),radial-gradient(circle_at_80%_78%,rgba(255,179,106,0.12),transparent_18%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(255,154,92,0.18),transparent_24%),radial-gradient(circle_at_92%_12%,rgba(255,211,111,0.16),transparent_18%),radial-gradient(circle_at_80%_78%,rgba(255,191,122,0.12),transparent_18%)]" />
 
       <div className="relative grid w-full max-w-6xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)),rgba(11,24,34,0.92)] shadow-[0_30px_90px_rgba(0,0,0,0.34)] lg:grid-cols-[1.18fr_0.82fr]">
         <section className="hidden border-r border-white/8 p-10 lg:block">
@@ -47,8 +47,8 @@ export default function LoginPage() {
 
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.035] p-5">
-              <p className="text-sm font-medium text-white">Built-in admin access</p>
-              <p className="mt-2 text-sm leading-6 text-white/58">Use the default account for initial setup or create additional local accounts from registration.</p>
+              <p className="text-sm font-medium text-white">Fast onboarding</p>
+              <p className="mt-2 text-sm leading-6 text-white/58">Use a local account to get into the dashboard quickly and move straight into employee and camera setup.</p>
             </div>
             <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.035] p-5">
               <p className="text-sm font-medium text-white">Camera-ready workflow</p>
@@ -59,7 +59,7 @@ export default function LoginPage() {
 
         <section className="p-8 sm:p-10">
           <div className="mb-8 flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian shadow-[0_18px_40px_rgba(82,242,208,0.18)]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] text-obsidian shadow-[0_18px_40px_rgba(255,154,92,0.18)]">
               <ShieldCheck className="h-7 w-7" />
             </div>
             <div>
@@ -99,14 +99,14 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Signing in...' : 'Open dashboard'}
             </button>
           </form>
 
           <div className="mt-6 rounded-[1.8rem] border border-white/10 bg-black/20 p-5 text-sm text-white/62">
-            Built-in admin: <span className="font-medium text-white">admin</span> / <span className="font-medium text-white">admin123</span>.
+            Need a separate operator login?
             <Link href="/register" className="ml-2 text-cyan-accent hover:text-white">
               Create account
             </Link>

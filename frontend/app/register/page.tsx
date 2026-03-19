@@ -38,7 +38,7 @@ export default function RegisterPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-obsidian px-4 py-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(82,242,208,0.18),transparent_24%),radial-gradient(circle_at_86%_16%,rgba(124,199,255,0.16),transparent_18%),radial-gradient(circle_at_84%_80%,rgba(255,179,106,0.12),transparent_18%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,154,92,0.18),transparent_24%),radial-gradient(circle_at_86%_16%,rgba(255,211,111,0.16),transparent_18%),radial-gradient(circle_at_84%_80%,rgba(255,191,122,0.12),transparent_18%)]" />
 
       <div className="relative grid w-full max-w-6xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)),rgba(11,24,34,0.92)] shadow-[0_30px_90px_rgba(0,0,0,0.34)] lg:grid-cols-[1.05fr_0.95fr]">
         <section className="hidden border-r border-white/8 p-10 lg:block">
@@ -47,13 +47,13 @@ export default function RegisterPage() {
             Create a local operator account for this control room
           </h1>
           <p className="mt-6 max-w-xl text-base leading-8 text-white/62">
-            Register a local login for this deployment. The built-in admin account remains available as a fallback, but separate users make day-to-day access cleaner.
+            Register a local login for this deployment so day-to-day access stays separated by operator instead of sharing one generic sign-in.
           </p>
         </section>
 
         <section className="p-8 sm:p-10">
           <div className="mb-8 flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian shadow-[0_18px_40px_rgba(82,242,208,0.18)]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] text-obsidian shadow-[0_18px_40px_rgba(255,154,92,0.18)]">
               <ShieldPlus className="h-7 w-7" />
             </div>
             <div>
@@ -110,7 +110,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-[1.2rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] px-4 py-3 font-semibold text-obsidian transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Creating account...' : 'Register and continue'}
             </button>

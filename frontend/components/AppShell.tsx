@@ -32,7 +32,7 @@ export default function AppShell({
       <div className="mx-auto flex min-h-screen max-w-7xl gap-6 px-4 py-5 sm:px-6 lg:px-8">
         <aside className="glass-panel hidden w-72 shrink-0 rounded-[2rem] p-6 lg:block">
           <div className="mb-10 flex items-center gap-4">
-            <div className="accent-ring flex h-14 w-14 items-center justify-center rounded-[1.3rem] bg-[linear-gradient(135deg,#52f2d0,#7cc7ff)] text-obsidian">
+            <div className="accent-ring flex h-14 w-14 items-center justify-center rounded-[1.3rem] bg-[linear-gradient(135deg,#ff9a5c,#ffd36f)] text-obsidian">
               <Camera className="h-7 w-7" />
             </div>
             <div>
@@ -50,7 +50,7 @@ export default function AppShell({
                   href={href}
                   className={`group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition ${
                     active
-                      ? 'bg-[linear-gradient(135deg,rgba(82,242,208,0.95),rgba(124,199,255,0.92))] text-obsidian shadow-[0_18px_44px_rgba(82,242,208,0.2)]'
+                      ? 'bg-[linear-gradient(135deg,rgba(255,154,92,0.95),rgba(255,211,111,0.92))] text-obsidian shadow-[0_18px_44px_rgba(255,154,92,0.2)]'
                       : 'text-white/68 hover:bg-white/6 hover:text-white'
                   }`}
                 >
@@ -61,18 +61,12 @@ export default function AppShell({
             })}
           </nav>
 
-          <div className="mt-10 rounded-3xl border border-white/8 bg-black/20 p-4">
-            <p className="text-xs uppercase tracking-[0.28em] text-white/35">Access</p>
-            <p className="mt-3 text-sm text-white/65">Built-in admin credentials remain available for fallback access.</p>
-            <p className="mt-2 text-sm font-medium text-white">admin / admin123</p>
-          </div>
-
           <button
             onClick={() => {
               clearSession()
               router.replace('/login')
             }}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/82 transition hover:bg-white/10"
+            className="mt-10 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/82 transition hover:bg-white/10"
           >
             <LogOut className="h-4 w-4" />
             Logout
@@ -105,7 +99,7 @@ export default function AppShell({
                     key={href}
                     href={href}
                     className={`flex flex-col items-center justify-center gap-1 rounded-2xl px-2 py-3 text-[11px] transition ${
-                      active ? 'bg-[linear-gradient(135deg,rgba(82,242,208,0.95),rgba(124,199,255,0.9))] text-obsidian' : 'text-white/62 hover:bg-white/6 hover:text-white'
+                      active ? 'bg-[linear-gradient(135deg,rgba(255,154,92,0.95),rgba(255,211,111,0.9))] text-obsidian' : 'text-white/62 hover:bg-white/6 hover:text-white'
                     }`}
                   >
                     <Icon className="h-4 w-4" />
